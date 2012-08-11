@@ -1,5 +1,5 @@
 a version with recalibration! cause its easy to forget while shooting on location.
-
+just seed your project with the example media bin calibration files.
 	====================================================================================================
 	                       ___           ___                        _____                      
 	                      /  /\         /  /\         _____        /  /::\                     
