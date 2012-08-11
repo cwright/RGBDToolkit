@@ -1,3 +1,5 @@
+a version with recalibration! cause its easy to forget while shooting on location.
+
 	====================================================================================================
 	                       ___           ___                        _____                      
 	                      /  /\         /  /\         _____        /  /::\                     

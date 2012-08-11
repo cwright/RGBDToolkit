@@ -165,6 +165,13 @@ void testApp::setup(){
     gui.add(undistortImages.setup("Undistort", ofxParameter<bool>()));
     gui.add(currentXMultiplyShift.setup("X Shift", ofxParameter<float>(), -.15, .15));
     gui.add(currentYMultiplyShift.setup("Y Shift", ofxParameter<float>(), -.15, .15));
+    
+    
+//NEW
+    gui.add(currentFOVx.setup("X Field of View", ofxParameter<float>(), 0., 2.));
+    gui.add(currentFOVy.setup("Y Field of View", ofxParameter<float>(), 0., 2.));
+//ENDNEW    
+    
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
     gui.add(currentHoleKernelSize.setup("Hole Kernel Size", ofxParameter<int>(), 1, 10));
     gui.add(currentHoleFillIterations.setup("Hole Fill Iterations", ofxParameter<int>(), 1, 20));
@@ -266,6 +273,7 @@ void testApp::populateTimelineElements(){
 
 #pragma mark customization
 //--------------------------------------------------------------
+//for post processes:
 void testApp::processDepthFrame(){
 	
     if(!drawDepthDistortion) return;
@@ -395,7 +403,7 @@ void testApp::drawGeometry(){
             glEnable(GL_DEPTH_TEST);
             cam.begin(renderFboRect);
             ofPushStyle();
-            renderer.drawMesh();
+            renderer.drawMesh(); 
             ofPopStyle();
             glDisable(GL_DEPTH_TEST);
             
@@ -1004,6 +1012,8 @@ void testApp::update(){
     
 	if(currentXMultiplyShift != renderer.xshift ||
 	   currentYMultiplyShift != renderer.yshift ||
+       currentFOVx != renderer.fx ||
+       currentFOVy != renderer.fy ||
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
@@ -1012,6 +1022,8 @@ void testApp::update(){
 	{		
 		renderer.xshift = currentXMultiplyShift;
 		renderer.yshift = currentYMultiplyShift;
+        renderer.fx = currentFOVx;
+        renderer.fy = currentFOVy;
 		renderer.mirror = currentMirror;
 		renderer.forceUndistortOff = !undistortImages;
 		holeFiller.enable = fillHoles;
@@ -1467,6 +1479,8 @@ void testApp::saveComposition(){
     projectsettings.setValue("holeIterations", currentHoleFillIterations);
     
 	projectsettings.setValue("mirror", currentMirror);
+    projectsettings.setValue("FOVx", currentFOVx);
+    projectsettings.setValue("FOVy", currentFOVy);
     
 	projectsettings.saveFile();
 
@@ -1627,7 +1641,12 @@ bool testApp::loadComposition(string compositionDirectory){
 
         currentXMultiplyShift = projectsettings.getValue("xmult", 0.);
         currentYMultiplyShift = projectsettings.getValue("ymult", 0.);
-
+        
+        std::cout << "FOV: " << renderer.fx << " " << renderer.fy << endl;
+        
+        currentFOVx = projectsettings.getValue("FOVx", renderer.fx);
+        currentFOVy = projectsettings.getValue("FOVy", renderer.fy);
+        
         fillHoles = projectsettings.getValue("fillholes", false);
         currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
         currentHoleFillIterations = projectsettings.getValue("holeIterations", 1);
