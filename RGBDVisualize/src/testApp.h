@@ -106,6 +106,9 @@ class testApp : public ofBaseApp, public ofxMSAInteractiveObjectDelegate {
 //NEW
     ofxFloatSlider currentFOVx;
     ofxFloatSlider currentFOVy;
+    ofxFloatSlider rotx;
+    ofxFloatSlider roty;
+    ofxFloatSlider rotz;
 //ENDNEW
     
     ofxToggle undistortImages;

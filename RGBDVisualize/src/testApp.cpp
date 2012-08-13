@@ -170,6 +170,10 @@ void testApp::setup(){
 //NEW
     gui.add(currentFOVx.setup("X Field of View", ofxParameter<float>(), 0., 2.));
     gui.add(currentFOVy.setup("Y Field of View", ofxParameter<float>(), 0., 2.));
+    gui.add(rotx.setup("RGB x rotation", ofxParameter<float>(), -10., 10.));
+    gui.add(roty.setup("RGB y rotation", ofxParameter<float>(), -10., 10.));
+    gui.add(rotz.setup("RGB z rotation", ofxParameter<float>(), -10., 10.));
+            
 //ENDNEW    
     
     gui.add(fillHoles.setup("Fill Holes", ofxParameter<bool>()));
@@ -1014,6 +1018,9 @@ void testApp::update(){
 	   currentYMultiplyShift != renderer.yshift ||
        currentFOVx != renderer.fx ||
        currentFOVy != renderer.fy ||
+       rotx != renderer.rotx ||
+       roty != renderer.roty ||
+       rotz != renderer.rotz ||
 	   currentMirror != renderer.mirror ||
 	   fillHoles != holeFiller.enable ||
 	   currentHoleKernelSize != holeFiller.getKernelSize() ||
@@ -1024,6 +1031,9 @@ void testApp::update(){
 		renderer.yshift = currentYMultiplyShift;
         renderer.fx = currentFOVx;
         renderer.fy = currentFOVy;
+        renderer.rotx = rotx;
+        renderer.roty = roty;
+        renderer.rotz = rotz;
 		renderer.mirror = currentMirror;
 		renderer.forceUndistortOff = !undistortImages;
 		holeFiller.enable = fillHoles;
@@ -1481,6 +1491,10 @@ void testApp::saveComposition(){
 	projectsettings.setValue("mirror", currentMirror);
     projectsettings.setValue("FOVx", currentFOVx);
     projectsettings.setValue("FOVy", currentFOVy);
+    projectsettings.setValue("rotx", rotx);
+    projectsettings.setValue("roty", roty);
+    projectsettings.setValue("rotz", rotz);
+    
     
 	projectsettings.saveFile();
 
@@ -1646,6 +1660,10 @@ bool testApp::loadComposition(string compositionDirectory){
         
         currentFOVx = projectsettings.getValue("FOVx", renderer.fx);
         currentFOVy = projectsettings.getValue("FOVy", renderer.fy);
+        
+        rotx = projectsettings.getValue("rotx", renderer.rotx);
+        roty = projectsettings.getValue("roty", renderer.roty);
+        rotz = projectsettings.getValue("rotz", renderer.rotz);
         
         fillHoles = projectsettings.getValue("fillholes", false);
         currentHoleKernelSize = projectsettings.getValue("kernelSize", 1);
